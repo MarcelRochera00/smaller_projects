@@ -1,0 +1,35 @@
+Pokémon: 898
+Best guess is one of its real types: 50.1% (always-water baseline: 15.7%)
+Macro F1: 0.40
+
+Accuracy by generation:
+gen
+1    0.530
+2    0.410
+3    0.563
+4    0.505
+5    0.532
+6    0.472
+7    0.375
+8    0.551
+
+Cohesion (lift, K=10):
+    type  lift
+     ice  6.52
+electric  6.00
+    fire  4.88
+  poison  3.32
+fighting  3.19
+    rock  3.04
+   ghost  2.66
+   grass  2.62
+   fairy  2.49
+ psychic  2.31
+  flying  2.28
+   water  2.26
+    dark  2.08
+   steel  1.97
+  ground  1.94
+  dragon  1.83
+     bug  1.71
+  normal  1.66
