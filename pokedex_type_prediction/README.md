@@ -1,12 +1,11 @@
 # Can a Pokedex entry reveal a Pokemon's type?
 
-![Cohesion by type](images/cohesion_by_type.png)
-
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/b98855f5-268d-4772-a064-04b80d88a317" alt="Cohesion by type" width="650">
+</p>
 After discovering a web-game where you have to guess a Pokemon by its Pokedex entry, I realised how ambiguous some of the Pokedex entries are. That's why, after giving it some thought, I decided to test if a Pokedex entry can reveal a Pokemon's type.
 
 Short answer: partly. Using only the text, a simple model's best guess is one of the Pokémon's real types 50.1% of the time, versus 15.7% for always guessing Water. But it depends a lot on the type: Ice, Electric and Fire entries give themselves away, while Normal, Bug and Dragon barely do.
-
-**Interactive explorers:** [2D](link) · [3D](link)
  
 ## Data and method
  
@@ -18,28 +17,38 @@ Short answer: partly. Using only the text, a simple model's best guess is one of
 
 ## What I found
 
-Cohesion by type image
+### Cohesion by type
 
-This chart shows how many times more often a Pokémon's text-neighbours share its type than random chance would give. Let's use an example: In total, there are 41/898 ice type pokemon up to gen8. This means that if I picked 10 random Pokemon, I would only get about 0.5 ice Pokemon (4.6% of all pokemon are ice type). 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/b98855f5-268d-4772-a064-04b80d88a317" alt="Cohesion by type" width="650">
+</p>
 
-Now, let's take an ice Pokemon and try to find how many of its neighbours (other pokemon with the closest Pokedex entry) are also ice type. Turns out, 3 of them are also ice! (30%). 30% divided by 4.6% is about 6.5. That's the **lift**. 1 means same as chance, and 6.5 means the neighbours share the type 6.5 times more often than chance.
+This chart shows how many times more often a Pokémon's text-neighbours share its type than random chance would give. Let's use an example. In total, there are 41 Ice-type Pokémon out of 898 up to Gen 8. This means that if I picked 10 random Pokémon, I would only get about 0.5 Ice Pokémon (4.6% of all Pokémon are Ice type).
 
-The top of the chart is Ice (6.5), Electric (6.0) and Fire (4.9). The bottom is Normal (1.7), Bug (1.7) and Dragon (1.8). Every single type is above 1, so the text always carries some signal about the type, just very different amounts.
+Now, let's take an Ice Pokémon and look at its neighbours (the other Pokémon with the closest Pokédex entry). Turns out, 3 of them are also Ice! (30%). 30% divided by 4.6% is about 6.5. That's the **lift** over chance. 1 means the same as chance, and 6.5 means the neighbours share the type 6.5 times more often than chance.
 
-Classifier image
+The top of the chart is Ice (6.5), Electric (6.0) and Fire (4.9). The bottom is Normal (1.7), Bug (1.7) and Dragon (1.8). Every single type is above 1, so the text always carries some signal about the type, just in very different amounts.
+
+### F1 score by type
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/4fc84bdd-3c31-4a8c-90eb-eb5f9ec2cc89" alt="F1 score by type" width="650">
+</p>
 
 Overall, the classifier's best guess is one of the Pokémon's real types 50.1% of the time (15.7% for the baseline). Per type, Electric (F1 0.69), Fire (F1 0.66) and Ice (F1 0.62) are the easiest, while Dragon (F1 0.17) and Dark (F1 0.20) are the hardest. Two very different measurements agree on which types are easy and which are hard. The results are also similar across generations (between 38% and 56% per generation), so no single generation is carrying the result.
 
+### Which types sound alike?
 
-Type similarity image
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/903dcb61-a508-4d9e-823a-601ba5983fd7" alt="Type similarity" width="600">
+</p>
 
-This is another graph that makes a lot of sense when you start to look into it. It shows the similarity score between types. Obviously, a type is 100% (1) similar to himself, but the interesting part is what pairs of different types are the most mixed up. Rock and Ground, Rock and Steel, Fairy and Psychic and finally Ghost and Psychic. Honestly, these are all answers that make sense: I still get Rock and Ground mixed up to this day.
-
+This is another graph that makes a lot of sense when you start to look into it. It shows the similarity score between types. Obviously, a type is 100% (1) similar to itself, but the interesting part is which pairs of different types are the most mixed up: Rock and Ground, Rock and Steel, Fairy and Psychic, and finally Ghost and Psychic. Honestly, these are all answers that make sense: I still get Rock and Ground mixed up to this day.
 
 ## Limitations
  
 - **One text per Pokémon.** I only use the first English Pokédex entry. Entries come from different games and have different writing styles, so some of the signal (or noise) may be style rather than meaning.
-- **Evolution lines.** Pokémon in the same evolution line often share both their description and their type. I did not keep evolution lines together when splitting the data, so this can make the results look better than they are. Although I guess it can also add noise since some evolutions can gain a second type.
+- **Evolution lines.** Pokémon in the same evolution line often share both their description and their type. I did not keep evolution lines together when splitting the data, so this can make the results look better than they are. Although I guess it can also add noise since some evolutions gain a second type.
 - **The type can be stated in the text.** Some entries literally mention things like "fire" or "water". I did not mask those words.
 - **Precision vs recall.** I balanced the classes so rare types would not be ignored. That raises recall (around 58% on average) but lowers precision (around 30%): the model says "yes" too easily.
 - **Small classes.** Most types have only 50 to 140 examples, so differences of a few points between types or generations are mostly noise.
